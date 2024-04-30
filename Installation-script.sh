@@ -114,16 +114,18 @@ echo "All tools (Trivy, Docker, Terraform, kubectl, AWS CLI, Temurin JDK, Jenkin
 echo "##############################################################################"
 echo "Checking Jenkins status..."
 sudo systemctl status jenkins | head -n 10
-
+echo ""
+echo "##############################################################################"
 echo "InitialAdminPassword:"
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+echo ""
 
 # Display Java version
 echo "##############################################################################"
 echo "Java version:"
 java --version
 
-exit 0
+echo ""
 echo "##############################################################################"
 echo "##############################################################################"
 # Warn user about requirements
@@ -132,24 +134,25 @@ echo "Make sure your firewall allows traffic on port 9000."
 echo "##############################################################################"
 echo "##############################################################################"
 
-
 echo "Do you want to continue? (yes/no)"
 read -r response
 
 # Check user response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    # Check Docker installation
+    if ! command_exists docker; then
+        echo "Docker is not installed. Please install Docker first."
+        exit 1
+    fi
+
     # Execute Docker run command
+    echo "Creating SonarQube container..."
     docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
-    
-echo "##############################################################################"
+
+    echo "##############################################################################"
     # Echo information/question
     echo "SonarQube container created successfully."
     echo "Enter in the browser URL: <This machine's public IP:9000> to access the SonarQube panel."
-echo "##############################################################################"
-
-
+    echo "##############################################################################"
 else
     echo "Operation aborted."
-fi
-
-
