@@ -124,3 +124,28 @@ echo "Java version:"
 java --version
 
 exit 0
+echo "##############################################################################"
+echo "##############################################################################"
+# Warn user about requirements
+echo "The following action will create a SonarQube container exposed on port 9000."
+echo "Make sure your firewall allows traffic on port 9000."
+echo "##############################################################################"
+echo "##############################################################################"
+
+
+echo "Do you want to continue? (yes/no)"
+read -r response
+
+# Check user response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    # Execute Docker run command
+    docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+
+    # Echo information/question
+    echo "SonarQube container created successfully."
+    echo "Now you can enter in the browser URL <machine's public IP:9000> to access the SonarQube panel."
+else
+    echo "Operation aborted."
+fi
+
+
