@@ -31,7 +31,13 @@ data "aws_subnets" "public" {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   }
+
+  filter {
+    name   = "availability-zone"
+    values = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1f"]
+  }
 }
+
 #cluster provision
 resource "aws_eks_cluster" "example" {
   name     = "EKS_CLOUD"
@@ -39,6 +45,9 @@ resource "aws_eks_cluster" "example" {
 
   vpc_config {
     subnet_ids = data.aws_subnets.public.ids
+
+    # Optionally configure public access CIDRs if needed
+    # public_access_cidrs = ["YOUR_PUBLIC_IP/32"]
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
