@@ -140,10 +140,14 @@ read -r response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     # Execute Docker run command
     docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
-
+    
+echo "##############################################################################"
     # Echo information/question
     echo "SonarQube container created successfully."
-    echo "Now you can enter in the browser URL <machine's public IP:9000> to access the SonarQube panel."
+    echo "Enter in the browser URL: <This machine's public IP:9000> to access the SonarQube panel."
+echo "##############################################################################"
+
+
 else
     echo "Operation aborted."
 fi
