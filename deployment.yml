@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: reddit-clone
-        image: sevenajay/reddit:latest
+        image: Matforzo/reddit:latest
         ports:
         - containerPort: 3000
